@@ -13,37 +13,25 @@ from simulation.simulation import (
     talks_to,
 )
 from util import get_checkpoint_dir
+import api.httpapi
+
+import asyncio
+
+agent_to_interview = {}
+ctx = {}
 
 
-def user_robot_conversation(agent_to_interview: GenerativeAgent, ctx: Context):
-    ctx.print(
-        f"Interview with {agent_to_interview.name} start, input empty line to exit",
-        style="yellow",
-    )
-    ctx.observations.append(
-        f"{ctx.user_agent.name} now is having a conversation with {agent_to_interview.name}"
-    )
-    while True:
-        user_message = ctx.ask()
-        if user_message == "":
-            ctx.print(f"Interview with {agent_to_interview.name} finished")
-            break
-        ctx.observations.append(f"{ctx.user_agent.name} said: {user_message}")
-        with ctx.console.status("[yellow]Waiting response..."):
-            response = interview_agent(
-                agent_to_interview, user_message, ctx.user_agent.name
-            )
-        if "GOODBYE" in response:
-            ctx.print(
-                f"{agent_to_interview.name} said Goodbye and ended the conversation"
-            )
-            break
-        ctx.print(response)
-        ctx.observations.append(response)
-    ctx.observations.append(
-        f"The conversation between {ctx.user_agent.name} and {agent_to_interview.name} is ended."
-    )
 
+def user_robot_conversation(_agent_to_interview: GenerativeAgent, _ctx: Context):
+    
+    def handle(input):
+        response = interview_agent(
+            _agent_to_interview, input, _ctx
+        )
+        return response
+    
+    api.httpapi.callback = handle
+    api.httpapi.Run()
 
 def agi_step(ctx: Context, instruction: dict) -> None:
     ctx.clock += 1

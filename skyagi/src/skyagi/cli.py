@@ -13,6 +13,7 @@ from dscd import client
 from model import get_all_embeddings, get_all_llms
 from settings import Settings, get_all_model_settings, load_model_setting
 from skyagi import agi_init, agi_step
+import api.httpapi
 
 cli = typer.Typer()
 console = Console()
@@ -161,7 +162,6 @@ def status():
     client.run(discord_token)
 
 
-@cli.command("run")
 def run():
     """
     Run SkyAGI
