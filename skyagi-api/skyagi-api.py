@@ -5,8 +5,8 @@ from lcserve import serving
 from rich.console import Console
 from rich.prompt import Prompt
 
-from skyagi.settings import Settings, load_model_setting
-from skyagi.skyagi import agi_init, agi_step
+from settings import Settings, load_model_setting
+from skyagi import agi_init, agi_step
 
 console = Console()
 

@@ -5,7 +5,7 @@ from pydantic import BaseModel, BaseSettings, Extra
 
 
 def json_config_settings_source(settings: BaseSettings) -> Dict[str, Any]:
-    from skyagi.util import load_json
+    from util import load_json
 
     # Load settings from JSON config file
     config_dir = Path(Path.home(), ".skyagi")

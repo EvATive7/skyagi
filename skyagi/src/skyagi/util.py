@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 from typing import Any, Dict
 
-from skyagi.model import load_embedding_from_config, load_llm_from_config
-from skyagi.settings import Settings
+from model import load_embedding_from_config, load_llm_from_config
+from settings import Settings
 
 
 def verify_openai_(token: str) -> str:

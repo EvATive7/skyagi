@@ -12,10 +12,10 @@ from langchain.prompts.chat import (
 )
 from langchain.vectorstores import FAISS
 
-from skyagi.context import Context
-from skyagi.model import load_embedding_from_config
-from skyagi.retriever import Retriever
-from skyagi.simulation.agent import GenerativeAgent
+from context import Context
+from model import load_embedding_from_config
+from retriever import Retriever
+from simulation.agent import GenerativeAgent
 
 
 # reference:

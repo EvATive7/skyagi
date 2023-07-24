@@ -4,7 +4,7 @@ from langchain import chat_models, embeddings, llms
 from langchain.embeddings.base import Embeddings
 from langchain.llms.base import BaseLanguageModel
 
-from skyagi.settings import EmbeddingSettings, LLMSettings
+from settings import EmbeddingSettings, LLMSettings
 
 # ------------------------- LLM/Chat models registry ------------------------- #
 llm_type_to_cls_dict: Dict[str, Type[BaseLanguageModel]] = {

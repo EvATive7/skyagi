@@ -7,11 +7,11 @@ import typer
 from rich.console import Console
 from rich.prompt import IntPrompt, Prompt, Confirm
 
-from skyagi import config, util
-from skyagi.discord import client
-from skyagi.model import get_all_embeddings, get_all_llms
-from skyagi.settings import Settings, get_all_model_settings, load_model_setting
-from skyagi.skyagi import agi_init, agi_step
+import config, util
+from dscd import client
+from model import get_all_embeddings, get_all_llms
+from settings import Settings, get_all_model_settings, load_model_setting
+from skyagi import agi_init, agi_step
 
 cli = typer.Typer()
 console = Console()
@@ -270,3 +270,5 @@ def main(
         return
 
     run()
+
+run()

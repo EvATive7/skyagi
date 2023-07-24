@@ -3,8 +3,8 @@ from typing import List
 from rich.console import Console
 from rich.prompt import Prompt
 
-from skyagi.settings import Settings
-from skyagi.simulation.agent import GenerativeAgent
+from settings import Settings
+from simulation.agent import GenerativeAgent
 
 
 class Context:

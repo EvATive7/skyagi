@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from skyagi.util import load_json_value, set_json_value
+from util import load_json_value, set_json_value
 
 
 def set_openai_token(token: str):
