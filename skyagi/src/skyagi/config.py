@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from util import load_json_value, set_json_value
+from util import load_json_value, set_json_value,load_yaml
 
 
 def set_openai_token(token: str):
@@ -37,13 +37,14 @@ def load_pinecone_token() -> str:
 
 
 def load_openai_token() -> str:
-    if "OPENAI_API_KEY" in os.environ:
-        return os.environ["OPENAI_API_KEY"]
-    config_dir = Path(Path.home(), ".skyagi")
-    if not config_dir.exists():
-        return ""
-    config_file = Path(config_dir, "config.json")
-    return load_json_value(config_file, "openai_token", "")
+    try:
+        return load_yaml("conf\\config.yaml")['openai-key'][0]
+    except:
+        config_dir = Path(Path.home(), ".skyagi")
+        if not config_dir.exists():
+            return ""
+        config_file = Path(config_dir, "config.json")
+        return load_json_value(config_file, "openai_token", "")
 
 
 def load_discord_token() -> str:

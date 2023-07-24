@@ -1,4 +1,5 @@
 import json
+import yaml
 import os
 from pathlib import Path
 from typing import Any, Dict
@@ -83,3 +84,10 @@ def load_json(filepath: Path) -> Dict:
 
 def get_checkpoint_dir(agent_file: str) -> str:
     return "./{}.cpt".format(os.path.basename(agent_file))
+
+def load_yaml(filepath: Path) -> Dict:
+    if not Path(filepath).exists():
+        return {}
+    with open(filepath, "r") as file:
+        yaml_obj = yaml.safe_load(file)
+        return yaml_obj

@@ -67,12 +67,7 @@ def agi_step(ctx: Context, instruction: dict) -> None:
                         style="yellow",
                     )
                 someone_asked = True
-                respond = ctx.ask(
-                    f"Do you want to respond to {robot_agent.name}?",
-                    choices=["yes", "no"],
-                )
-                if respond == "yes":
-                    user_robot_conversation(robot_agent, ctx)
+                user_robot_conversation(robot_agent, ctx)
 
     ctx.print("The world has something else happening...", style="yellow")
     # let the activities of non user robots happen

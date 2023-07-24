@@ -3,4 +3,5 @@
 .vscode/*.log
 dist
 .vercel
-agent.json.cpt
+*.json.cpt
+skyagi/src/skyagi/conf

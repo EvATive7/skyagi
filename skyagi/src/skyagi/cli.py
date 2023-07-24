@@ -1,4 +1,5 @@
 import json
+import yaml
 import os
 from pathlib import Path
 
@@ -15,6 +16,7 @@ from skyagi import agi_init, agi_step
 
 cli = typer.Typer()
 console = Console()
+yaml_config_path = 'conf\\config.yaml'
 
 #######################################################################################
 # Config CLI
@@ -164,22 +166,19 @@ def run():
     """
     Run SkyAGI
     """
+    if not Path(yaml_config_path).exists():
+        raise FileNotFoundError("YAML Config did not found")
+    
     settings = Settings()
+    
+    yamlconfig = util.load_yaml(yaml_config_path)
 
-    # Ask Model settings
-    questions = [
-        inquirer.List(
-            "llm-model",
-            message="What LLM model you want to use?",
-            choices=get_all_model_settings(),
-        )
-    ]
-    answers = inquirer.prompt(questions=questions)
-    settings.model = load_model_setting(answers["llm-model"])
+    # Model settings
+    settings.model = load_model_setting(yamlconfig["model"])
 
+    # Key
     openai_key = config.load_openai_token()
-    if os.getenv("OPENAI_API_KEY") is None:
-        os.environ["OPENAI_API_KEY"] = openai_key
+    os.environ["OPENAI_API_KEY"] = openai_key
 
     # Model initialization verification
     res = util.verify_model_initialization(settings)
@@ -187,65 +186,40 @@ def run():
         console.print(res, style="red")
         return
     # Get inputs from the user
-    agent_count = IntPrompt.ask(
-        "Number of agents to create (at least 2 agents)?", default=3
-    )
+    agent_count = yamlconfig["NumberOfAgents"]
     if agent_count < 2:
         console.print("Please config at least 2 agents, exiting", style="red")
         return
     agent_configs = []
     agent_names = []
     for idx in range(agent_count):
-        console.print(f"Specify agent number {idx+1}")
+        console.print(f"Specifing agent number {idx+1}")
         agent_config = {}
         while True:
-            agent_file = Prompt.ask(
-                "Enter the path to the agent configuration file", default="./agent.json"
-            )
-            if not os.path.isfile(agent_file):
-                console.print(f"Invalid file path: {agent_file}", style="red")
-                continue
-            try:
-                agent_config = util.load_json(Path(agent_file))
-                agent_config["path"] = agent_file
-                if agent_config == {}:
-                    console.print(
-                        "Empty configuration, please provide a valid one", style="red"
-                    )
-                    continue
-                break
-            except json.JSONDecodeError:
-                console.print(
-                    "Invalid configuration, please provide a valid one", style="red"
-                )
-                continue
+            agent_file = yamlconfig['AgentFiles'][idx]
+            agent_config = util.load_json(Path(agent_file))
+            agent_config["path"] = agent_file
+            if agent_config == {}:
+                raise Exception("Agent {idx} gets an empty configuration")
+            break
         agent_configs.append(agent_config)
         agent_names.append(agent_config["name"])
 
-    user_role = Prompt.ask(
-        "Pick which role you want to perform? (input the exact name, case sensitive)",
-        choices=agent_names,
-        default=agent_names[0],
-    )
+    user_role = agent_names[yamlconfig["UserRole"]]
     user_index = agent_names.index(user_role)
 
-    from_checkpoint = Confirm.ask("Load agents' memories from checkpoint?", default=False)
+    #TODO
+    from_checkpoint = False
 
     ctx = agi_init(agent_configs, console, settings, user_index, from_checkpoint=from_checkpoint)
 
     actions = ["continue", "interview", "exit"]
     while True:
         instruction = {"command": "continue"}
-        action = Prompt.ask(
-            "Pick an action to perform?", choices=actions, default=actions[0]
-        )
+        action = 'interview' #TODO
         if action == "interview":
             robot_agent_names = list(map(lambda agent: agent.name, ctx.robot_agents))
-            robot_agent_name = Prompt.ask(
-                f"As {ctx.user_agent.name}, which agent do you want to talk to?",
-                choices=robot_agent_names,
-                default=robot_agent_names[0],
-            )
+            robot_agent_name = robot_agent_names[yamlconfig['TalkTo']]
             instruction = {
                 "command": "interview",
                 "agent_to_interview": ctx.robot_agents[
