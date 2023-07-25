@@ -7,7 +7,7 @@ async def handle_request(request):
     # 这里可以添加处理请求的逻辑
     data = await request.text()
     data = callback(data)
-    return web.json_response(data)
+    return web.Response(body=data)
 
 async def handle_check(request):
     data = {}

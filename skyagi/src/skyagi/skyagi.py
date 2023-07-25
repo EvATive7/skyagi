@@ -32,6 +32,8 @@ def user_robot_conversation(_agent_to_interview: GenerativeAgent, _ctx: Context)
     
     api.httpapi.callback = handle
     api.httpapi.Run()
+    
+    exit()
 
 def agi_step(ctx: Context, instruction: dict) -> None:
     ctx.clock += 1
