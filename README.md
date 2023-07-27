@@ -32,8 +32,8 @@ model: "openai-gpt-3.5-turbo"
 #model: "openai-gpt-3.5-text-davinci-003"
 
 openai-key:
-  #- "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"
-  - "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"
+  #- "sk-AjkPGmzC5zL1DczJ4bs75RDv49QZeH29Qb9p"
+  - "sk-yWh1wDmWBQEGJxJIaZepq5xZxnCADxjXqR7"
   - "Only First Available (beta)"
 
 NumberOfAgents: 2
