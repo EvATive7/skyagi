@@ -20,36 +20,44 @@ For details about the interesting observations, refer to the [observations secti
 
 ## Quick Start
 
-Installation
-
+cd to /skyagi/src/skyagi  
+install packages needed via pip  
 ```sh
-pip install --upgrade skyagi
+pip install
 ```
+create directory conf  
+cd to conf and create config.yaml like:  
+```yaml
+model: "openai-gpt-3.5-turbo"
+#model: "openai-gpt-3.5-text-davinci-003"
 
-Or
+openai-key:
+  #- "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"
+  - "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"
+  - "Only First Available (beta)"
 
+NumberOfAgents: 2
+
+#Current Dir is Running Dir
+AgentFiles:
+  - "conf/agent/kong.json"
+  - "conf/agent/ying.json"
+
+UserRole: 1
+#UserRole: 0
+
+#Index of the list expect the UserRole
+#Examlple:
+#Agent=['Kong','Ying'],UserRole=0 
+# ->
+#TalkToList=['Ying']
+TalkTo: 0
+```
+then cd ..  
 ```sh
-make install
+python cli.py
 ```
-
-How to run
-
-```sh
-export OPENAI_API_KEY="..."
-skyagi
-# or
-OPENAI_API_KEY="..." skyagi
-```
-
-For example if the OpenAI key is `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`, then the exact command would be the following
-
-```sh
-# make sure no quote around the token
-export OPENAI_API_KEY=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
-skyagi
-# or
-OPENAI_API_KEY=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 skyagi
-```
+after initializing, api will deploy at **localhost:8765**.
 
 To use example agent configs, download it from here: https://github.com/litanlitudan/skyagi/tree/main/examples
 (pip install doesn't contain the agent configuration)
